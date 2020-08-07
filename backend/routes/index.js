@@ -8,8 +8,12 @@ var router = express.Router();
 
 
 // simple route
-router.get("/", (req, res) => {
-  res.json({ message: "Welcome to the backend of our Comp 353 website." });
-});
+// router.get("/", (req, res) => {
+//   res.json({ message: "ss to the backend of our Comp 353 website." });
+// });
+
+// router.get("/api/jobs", (req, res) => {
+//   res.json({ message: "Hello to the backend of our Comp 353 website." });
+// });
 
 module.exports = router;
