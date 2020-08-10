@@ -1,4 +1,5 @@
 const sql = require("./db.js");
+const Job = require("./job.model.js");
 
 // constructor
 const User = function(user) {
@@ -102,7 +103,24 @@ User.updateById = (userID, user, result) => {
 
 User.remove = (userID, result) => {
 
-  sql.query("DELETE FROM posts WHERE userID = " + Number(userID));  
+  sql.query("Select jobID FROM posts WHERE userID = " + Number(userID), function (err, results) {
+    if (err) {
+      throw err;
+    }
+
+    for (var i = 0; i < results.length; i++) {
+      sql.query("DELETE FROM job WHERE jobID = " + Number(results[i].jobID), function (err, results) {
+        if (err) {
+          throw err;
+        }
+      });
+    }
+    return;
+  });
+
+  sql.query("DELETE FROM posts WHERE userID = " + Number(userID));
+
+  sql.query("DELETE FROM appliesTo WHERE userID = " + Number(userID));
 
   sql.query("DELETE FROM user WHERE userID = ?", userID, (err, res) => {
     if (err) {
@@ -124,6 +142,8 @@ User.remove = (userID, result) => {
 
 User.removeAll = result => {
 
+  sql.query("DELETE FROM appliesTo");
+
   sql.query("DELETE FROM posts");
 
   sql.query("DELETE FROM job");
@@ -139,6 +159,7 @@ User.removeAll = result => {
     result(null, res);
   });
 
+  sql.query("ALTER TABLE appliesTo AUTO_INCREMENT = 1");
   sql.query("ALTER TABLE user AUTO_INCREMENT = 1");
   sql.query("ALTER TABLE job AUTO_INCREMENT = 1");
   sql.query("ALTER TABLE posts AUTO_INCREMENT = 1");

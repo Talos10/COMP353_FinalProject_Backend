@@ -134,32 +134,3 @@ exports.updatePosted = (req, res) => {
       }
     );
   };
-
-// Delete a job with the specified jobID in the request
-exports.delete = (req, res) => {
-    Posts.remove(req.params.jobID, (err, data) => {
-      if (err) {
-        if (err.kind === "not_found") {
-          res.status(404).send({
-            message: `Not found job with jobID ${req.params.jobID}.`
-          });
-        } else {
-          res.status(500).send({
-            message: "Could not delete job with jobID " + req.params.jobID
-          });
-        }
-      } else res.send({ message: `Job was deleted successfully!` });
-    });
-  };
-
-// // Delete all jobs from the database.
-// exports.deleteAll = (req, res) => {
-//     Job.removeAll((err, data) => {
-//       if (err)
-//         res.status(500).send({
-//           message:
-//             err.message || "Some error occurred while removing all jobs."
-//         });
-//       else res.send({ message: `All jobs were deleted successfully!` });
-//     });
-//   };

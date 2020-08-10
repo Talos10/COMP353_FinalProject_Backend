@@ -8,6 +8,7 @@ const Posts = function(posts) {
 };
 
 Posts.create = (newPostedJob, result) => {
+
   sql.query("INSERT INTO posts SET ?", newPostedJob, (err, res) => {
     if (err) {
       console.log("error: ", err);
@@ -135,42 +136,5 @@ Posts.updatePostedById = (jobID, isPosted, result) => {
     }
   );
 };
-
-Posts.remove = (jobID, result) => {
-  sql.query("DELETE FROM job WHERE jobID = ?", jobID, (err, res) => {
-
-    sql.query("DELETE FROM posts WHERE jobID = " + jobID);
-
-    if (err) {
-      console.log("error: ", err);
-      result(null, err);
-      return;
-    }
-
-    if (res.affectedRows == 0) {
-      // not found job with the jobID
-      result({ kind: "not_found" }, null);
-      return;
-    }
-
-    console.log("deleted job with jobID: ", jobID);
-    result(null, res);
-  });
-};
-
-// Job.removeAll = result => {
-//   sql.query("DELETE FROM job", (err, res) => {
-//     if (err) {
-//       console.log("error: ", err);
-//       result(null, err);
-//       return;
-//     }
-
-//     console.log(`deleted ${res.affectedRows} jobs`);
-//     result(null, res);
-//   });
-
-//   sql.query("ALTER TABLE job AUTO_INCREMENT = 1");
-// };
 
 module.exports = Posts;

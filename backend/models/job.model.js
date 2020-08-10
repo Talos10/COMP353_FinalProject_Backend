@@ -1,5 +1,6 @@
 const sql = require("./db.js");
 const Posts = require("../models/posts.model.js");
+const Applies = require("../models/applies.model.js");
 
 // constructor
 const Job = function(job) {
@@ -111,6 +112,8 @@ Job.remove = (jobID, result) => {
 
   sql.query("DELETE FROM posts WHERE jobID = " + Number(jobID));
 
+  sql.query("DELETE FROM appliesTo WHERE jobID = " + Number(jobID));
+
   sql.query("DELETE FROM job WHERE jobID = ?", Number(jobID), (err, res) => {
       if (err) {
       console.log("error: ", err);
@@ -133,6 +136,8 @@ Job.removeAll = result => {
 
   sql.query("DELETE FROM posts");
 
+  sql.query("DELETE FROM appliesTo");
+
   sql.query("DELETE FROM job", (err, res) => {
     if (err) {
       console.log("error: ", err);
@@ -143,7 +148,9 @@ Job.removeAll = result => {
     console.log(`deleted ${res.affectedRows} jobs`);
     result(null, res);
   });
-
+  
+  sql.query("ALTER TABLE posts AUTO_INCREMENT = 1");
+  sql.query("ALTER TABLE appliesTo AUTO_INCREMENT = 1");
   sql.query("ALTER TABLE job AUTO_INCREMENT = 1");
 };
 
