@@ -10,6 +10,7 @@ var indexRouter = require('./routes/index');
 var userRouter = require("./routes/user.routes");
 var jobRouter = require("./routes/job.routes");
 var postsRouter = require("./routes/posts.routes");
+var appliesRouter = require("./routes/applies.routes");
 
 var app = express();
 
@@ -33,6 +34,7 @@ app.use('/', indexRouter);
 app.use('/user', userRouter);
 app.use('/job', jobRouter);
 app.use('/posts', postsRouter);
+app.use('/applies', appliesRouter);
 
 // parse requests of content-type: application/json
 app.use(bodyParser.json());
